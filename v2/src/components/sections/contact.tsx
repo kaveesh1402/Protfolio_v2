@@ -71,7 +71,41 @@ export function Contact() {
   const [headerRef, headerInView] = useInView({ threshold: 0.2, triggerOnce: true });
   const [leftRef, leftInView] = useInView({ threshold: 0.1, triggerOnce: true });
   const [rightRef, rightInView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const submitMag = useMagnetic(0.25);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus("idle");
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="contact" className="py-28 relative overflow-hidden">
@@ -145,32 +179,26 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="glass rounded-3xl p-8 border border-border/50">
-              <form
-                className="space-y-5"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  alert("Thanks for reaching out!");
-                }}
-              >
+              <form className="space-y-5" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-muted-foreground">
                       Name
                     </label>
-                    <GlowInput id="name" placeholder="John Doe" required />
+                    <GlowInput id="name" name="name" placeholder="John Doe" required />
                   </div>
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-muted-foreground">
                       Email
                     </label>
-                    <GlowInput id="email" type="email" placeholder="john@example.com" required />
+                    <GlowInput id="email" name="email" type="email" placeholder="john@example.com" required />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="subject" className="text-sm font-medium text-muted-foreground">
                     Subject
                   </label>
-                  <GlowInput id="subject" placeholder="Project Inquiry" required />
+                  <GlowInput id="subject" name="subject" placeholder="Project Inquiry" required />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-muted-foreground">
@@ -178,24 +206,57 @@ export function Contact() {
                   </label>
                   <GlowTextarea
                     id="message"
+                    name="message"
                     placeholder="How can we work together?"
                     className="min-h-[140px]"
                     required
                   />
                 </div>
 
-                <animated.div style={submitMag.style}>
-                  <Button
-                    ref={submitMag.ref as any}
-                    type="submit"
-                    className="w-full h-12 text-base glow-primary ripple-container"
-                    onMouseMove={submitMag.onMouseMove as any}
-                    onMouseLeave={submitMag.onMouseLeave}
-                    data-cursor="Send →"
-                  >
-                    Send Message <Send className="ml-2 h-4 w-4" />
-                  </Button>
-                </animated.div>
+                <div className="space-y-4">
+                  <animated.div style={submitMag.style}>
+                    <Button
+                      ref={submitMag.ref as any}
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full h-12 text-base glow-primary ripple-container relative overflow-hidden"
+                      onMouseMove={submitMag.onMouseMove as any}
+                      onMouseLeave={submitMag.onMouseLeave}
+                      data-cursor={isSubmitting ? "Sending..." : "Send →"}
+                    >
+                      {isSubmitting ? (
+                        <div className="flex items-center gap-2">
+                          <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                          Sending...
+                        </div>
+                      ) : (
+                        <>
+                          Send Message <Send className="ml-2 h-4 w-4" />
+                        </>
+                      )}
+                    </Button>
+                  </animated.div>
+
+                  {status === "success" && (
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      className="text-sm text-green-500 font-medium text-center"
+                    >
+                      Thanks for reaching out! I&apos;ll get back to you soon.
+                    </motion.p>
+                  )}
+
+                  {status === "error" && (
+                    <motion.p
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      className="text-sm text-destructive font-medium text-center"
+                    >
+                      Something went wrong. Please try again or email me directly at 12akaveeshbhat@gmail.com.
+                    </motion.p>
+                  )}
+                </div>
               </form>
             </div>
           </motion.div>
