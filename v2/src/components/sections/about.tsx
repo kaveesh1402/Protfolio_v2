@@ -23,6 +23,34 @@ const timeline = [
     description:
       "Developed and optimized distributed Spring Boot microservices at scale. Implemented Kafka producers/consumers for high-throughput event streaming. Built secure REST APIs improving inter-service communication by 40%.",
   },
+  {
+    role: "Calorie Tracker Mobile Application",
+    company: "Personal Project",
+    period: "June 2025 – Aug 2025",
+    description:
+      "Developed a mobile application to track daily calorie intake, meals, and nutritional data. Built the frontend using Flutter and integrated Firebase for real-time data storage and user authentication. Implemented food search functionality using the USDA FoodData Central API for accurate calorie data retrieval.",
+  },
+  {
+    role: "Movie Recommendation System",
+    company: "Python, NLTK, Streamlit, Scikit-learn",
+    period: "March 2024 – June 2024",
+    description:
+      "Integrated data preprocessing techniques to handle text data, including tokenization, stemming, and vectorization. Implemented sentiment analysis algorithms to classify user sentiment towards movies based on textual data. Utilized machine learning models such as collaborative filtering and content-based filtering to personalize recommendations.",
+  },
+  {
+    role: "SDE Intern",
+    company: "ACIC (Atal Community Innovation Center)",
+    period: "October 2023 – December 2023",
+    description:
+      "Conducted in depth research on rural challenges, identifying key pain points affecting 90% communities. Crafted Innovative solutions, resulting in 30% increase in access to essential services within target regions. Presented findings to stakeholders, including government officials and community leaders, resulting in a 90% positive feedback rate and identifying 3 potential avenues for implementation.",
+  },
+  {
+    role: "Placement Coordinator",
+    company: "Indian School of Business (ISB)",
+    period: "Sep 2023 – Nov 2023",
+    description:
+      "Oversaw digital placement operations, managing a database of 5000+ student profiles. Executed process improvements, reducing placement cycle time by 20% and increasing student satisfaction by 15%. Collaborated with 50+ recruiters to facilitate seamless recruitment processes, resulting in a 25% increase in placement offers compared to the previous year.",
+  },
 ];
 
 // Physics-bouncy skill badge

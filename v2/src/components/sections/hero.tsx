@@ -226,7 +226,7 @@ export function Hero() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 1.1, type: "spring", stiffness: 200 }}
             >
-              <span className="text-3xl font-bold gradient-text">1.5+</span>
+              <span className="text-3xl font-bold gradient-text">2.5+</span>
               <span className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Years Exp</span>
             </motion.div>
           </div>
