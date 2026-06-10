@@ -17,7 +17,7 @@ const skills = [
 
 const timeline = [
   {
-    role: "Programmer Analyst",
+    role: "Software Engineer - I",
     company: "Cognizant Technology Solutions",
     period: "May 2025 – Present",
     description:
