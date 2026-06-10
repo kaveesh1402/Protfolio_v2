@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, Mail, MapPin, Phone } from "lucide-react";
+import { Send, Mail, MapPin, Phone, Github, Linkedin, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,11 +10,14 @@ import { useInView } from "react-intersection-observer";
 import { animated } from "@react-spring/web";
 import { useMagnetic } from "@/hooks/use-magnetic";
 
+/* ─────────────────────────────────────────────
+   Contact info items
+───────────────────────────────────────────── */
 const contactItems = [
   {
     icon: <MapPin className="h-5 w-5" />,
     label: "Location",
-    value: "Hyderabad, Telangana (Open to Relocation)",
+    value: "Hyderabad, India (Open to Relocation)",
     href: null,
   },
   {
@@ -31,6 +34,32 @@ const contactItems = [
   },
 ];
 
+const socialLinks = [
+  {
+    icon: <Linkedin className="h-5 w-5" />,
+    label: "LinkedIn",
+    handle: "kaveesh-bhat",
+    href: "https://linkedin.com/in/kaveesh-bhat",
+    color: "oklch(0.6 0.18 240)",
+    colorBg: "oklch(0.6 0.18 240 / 0.1)",
+    colorBorder: "oklch(0.6 0.18 240 / 0.2)",
+    description: "Connect & view recommendations",
+  },
+  {
+    icon: <Github className="h-5 w-5" />,
+    label: "GitHub",
+    handle: "kaveesh1402",
+    href: "https://github.com/kaveesh1402",
+    color: "oklch(0.7 0.02 264)",
+    colorBg: "oklch(0.7 0.02 264 / 0.1)",
+    colorBorder: "oklch(0.7 0.02 264 / 0.2)",
+    description: "View code & open source work",
+  },
+];
+
+/* ─────────────────────────────────────────────
+   Glow input/textarea
+───────────────────────────────────────────── */
 function GlowInput({ ...props }: React.ComponentProps<typeof Input>) {
   const [focused, setFocused] = useState(false);
   return (
@@ -67,6 +96,9 @@ function GlowTextarea({ ...props }: React.ComponentProps<typeof Textarea>) {
   );
 }
 
+/* ─────────────────────────────────────────────
+   Main Export
+───────────────────────────────────────────── */
 export function Contact() {
   const [headerRef, headerInView] = useInView({ threshold: 0.2, triggerOnce: true });
   const [leftRef, leftInView] = useInView({ threshold: 0.1, triggerOnce: true });
@@ -87,15 +119,10 @@ export function Contact() {
       const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "https://formspree.io/f/mojpqpyp";
       const response = await fetch(endpoint, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(data),
       });
-
       const result = await response.json();
-
       if (response.ok) {
         setStatus("success");
         (e.target as HTMLFormElement).reset();
@@ -104,7 +131,7 @@ export function Contact() {
         setStatus("error");
       }
     } catch (error) {
-      console.error("Submission network error:", error);
+      console.error("Submission error:", error);
       setStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -124,55 +151,107 @@ export function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
-          <p className="text-sm font-semibold tracking-[0.2em] text-primary uppercase mb-3">
-            Get in Touch
-          </p>
+          <p className="text-sm font-semibold tracking-[0.2em] text-primary uppercase mb-3">Contact</p>
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
             Let&apos;s work <span className="gradient-text">together.</span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            Open to full-time roles, contract work, and interesting conversations about
-            distributed systems, microservices, or Kafka at scale.
+            Open to full-time roles, contract work, and conversations about distributed systems,
+            microservices, or Kafka at scale.
           </p>
+
+          {/* Availability badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={headerInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ delay: 0.3 }}
+            className="inline-flex items-center gap-2 mt-5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+            </span>
+            Available for full-time opportunities
+          </motion.div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left — contact info */}
+          {/* Left — contact info + socials */}
           <motion.div
             ref={leftRef}
             initial={{ opacity: 0, x: -24 }}
             animate={leftInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="space-y-6"
+            className="space-y-8"
           >
-            {contactItems.map(({ icon, label, value, href }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 16 }}
-                animate={leftInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
-                className="flex items-center gap-5 group"
-              >
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary/20 group-hover:shadow-lg group-hover:shadow-primary/10 transition-all duration-300">
-                  {icon}
-                </div>
-                <div>
-                  <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1">
-                    {label}
+            {/* Contact items */}
+            <div className="space-y-5">
+              {contactItems.map(({ icon, label, value, href }, i) => (
+                <motion.div
+                  key={label}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={leftInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                  className="flex items-center gap-5 group"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 group-hover:bg-primary/20 group-hover:shadow-lg group-hover:shadow-primary/10 transition-all duration-300">
+                    {icon}
                   </div>
-                  {href ? (
-                    <a
-                      href={href}
-                      className="text-foreground hover:text-primary transition-colors link-underline"
-                    >
-                      {value}
-                    </a>
-                  ) : (
-                    <div className="text-foreground">{value}</div>
-                  )}
-                </div>
-              </motion.div>
-            ))}
+                  <div>
+                    <div className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-1">
+                      {label}
+                    </div>
+                    {href ? (
+                      <a href={href} className="text-foreground hover:text-primary transition-colors link-underline">
+                        {value}
+                      </a>
+                    ) : (
+                      <div className="text-foreground">{value}</div>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Section divider */}
+            <div className="section-divider" />
+
+            {/* Social cards */}
+            <div className="space-y-3">
+              <p className="text-xs font-semibold tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                Connect Online
+              </p>
+              {socialLinks.map((social, i) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={leftInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.55 + i * 0.1 }}
+                  className="flex items-center justify-between p-4 rounded-2xl border transition-all duration-300 hover:shadow-lg group"
+                  style={{
+                    borderColor: social.colorBorder,
+                    background: social.colorBg,
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: social.colorBorder }}>
+                      <span style={{ color: social.color }}>{social.icon}</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-sm text-foreground">{social.label}</div>
+                      <div className="text-xs text-muted-foreground">@{social.handle}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground group-hover:text-foreground transition-colors">
+                    <span className="hidden sm:block">{social.description}</span>
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </div>
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
 
           {/* Right — form */}
@@ -183,7 +262,7 @@ export function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="glass rounded-3xl p-8 border border-border/50">
-              <form className="space-y-5" onSubmit={handleSubmit}>
+              <form className="space-y-5" onSubmit={handleSubmit} noValidate>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-muted-foreground">
@@ -202,7 +281,7 @@ export function Contact() {
                   <label htmlFor="subject" className="text-sm font-medium text-muted-foreground">
                     Subject
                   </label>
-                  <GlowInput id="subject" name="subject" placeholder="Project Inquiry" required />
+                  <GlowInput id="subject" name="subject" placeholder="Job Opportunity / Project Inquiry" required />
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-muted-foreground">
@@ -211,7 +290,7 @@ export function Contact() {
                   <GlowTextarea
                     id="message"
                     name="message"
-                    placeholder="How can we work together?"
+                    placeholder="Tell me about the role or project..."
                     className="min-h-[140px]"
                     required
                   />
@@ -220,13 +299,14 @@ export function Contact() {
                 <div className="space-y-4">
                   <animated.div style={submitMag.style}>
                     <Button
-                      ref={submitMag.ref as any}
+                      ref={submitMag.ref as React.Ref<HTMLButtonElement>}
                       type="submit"
                       disabled={isSubmitting}
                       className="w-full h-12 text-base glow-primary ripple-container relative overflow-hidden"
-                      onMouseMove={submitMag.onMouseMove as any}
+                      onMouseMove={submitMag.onMouseMove as React.MouseEventHandler}
                       onMouseLeave={submitMag.onMouseLeave}
                       data-cursor={isSubmitting ? "Sending..." : "Send →"}
+                      aria-label="Send message"
                     >
                       {isSubmitting ? (
                         <div className="flex items-center gap-2">
@@ -245,9 +325,9 @@ export function Contact() {
                     <motion.p
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
-                      className="text-sm text-green-500 font-medium text-center"
+                      className="text-sm text-emerald-400 font-medium text-center"
                     >
-                      Thanks for reaching out! I&apos;ll get back to you soon.
+                      ✅ Thanks! I&apos;ll get back to you within 24 hours.
                     </motion.p>
                   )}
 
@@ -257,7 +337,10 @@ export function Contact() {
                       animate={{ opacity: 1, height: "auto" }}
                       className="text-sm text-destructive font-medium text-center"
                     >
-                      Something went wrong. Please try again or email me directly at 12akaveeshbhat@gmail.com.
+                      Something went wrong. Please email me directly at{" "}
+                      <a href="mailto:12akaveeshbhat@gmail.com" className="underline">
+                        12akaveeshbhat@gmail.com
+                      </a>
                     </motion.p>
                   )}
                 </div>

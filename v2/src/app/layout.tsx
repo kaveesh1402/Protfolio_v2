@@ -15,15 +15,39 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Kaveesh Bhat — Software Engineer",
+  title: "Kaveesh Bhat — Software Engineer | Java · Spring Boot · Kafka",
   description:
-    "Java Engineer specializing in cloud-native microservices, Apache Kafka, Spring Boot, and Generative AI.",
-  keywords: ["Software Engineer", "Java", "Kafka", "Spring Boot", "Next.js", "Gen AI"],
-  authors: [{ name: "Kaveesh Bhat" }],
+    "Software Engineer at Cognizant specializing in cloud-native microservices, Apache Kafka, Spring Boot, Kubernetes, and Generative AI. Open to full-time opportunities.",
+  keywords: [
+    "Software Engineer",
+    "Java Engineer",
+    "Spring Boot Developer",
+    "Apache Kafka",
+    "Microservices",
+    "Kubernetes",
+    "Cloud Native",
+    "Full Stack Developer",
+    "Next.js",
+    "Generative AI",
+    "Kaveesh Bhat",
+    "Cognizant",
+    "Hyderabad",
+  ],
+  authors: [{ name: "Kaveesh Bhat", url: "https://linkedin.com/in/kaveesh-bhat" }],
+  robots: { index: true, follow: true },
   openGraph: {
     title: "Kaveesh Bhat — Software Engineer",
-    description: "Cloud-native engineer exploring distributed systems and Generative AI.",
+    description:
+      "Cloud-native engineer building event-driven systems with Spring Boot, Kafka & Kubernetes. Exploring Gen AI.",
     type: "website",
+    locale: "en_US",
+    siteName: "Kaveesh Bhat Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Kaveesh Bhat — Software Engineer",
+    description:
+      "Cloud-native engineer building event-driven systems with Spring Boot, Kafka & Kubernetes.",
   },
 };
 
